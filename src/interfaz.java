@@ -74,13 +74,12 @@ public class interfaz extends JFrame{
                 int tam = Integer.parseInt(JOptionPane.showInputDialog("Ingrese el número de iteraciones"));
                 ForkJoinPool pool = new ForkJoinPool(5);
                 BigInteger[] seq = new BigInteger[tam];
-                long inicio = System.currentTimeMillis();
                 FibonacciFork task = new FibonacciFork(0, tam);
+                long inicio = System.currentTimeMillis();
                 for (int i = 0; i < tam; i++) {
                     seq[i] = pool.invoke(task);
                     task = new FibonacciFork(i+1, tam);
                 }
-
                 long fin = System.currentTimeMillis();
                 long total = (fin - inicio);
                 area1.setText(Arrays.toString(seq));
