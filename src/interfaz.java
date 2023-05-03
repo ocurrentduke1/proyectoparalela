@@ -53,7 +53,7 @@ public class interfaz extends JFrame{
         ActionListener secuencial = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                tam = Integer.parseInt(JOptionPane.showInputDialog("Ingrese el número de iteraciones"));
+                tam = Integer.parseInt(JOptionPane.showInputDialog("Ingrese el número de iteraciones en secuencial"));
                 long inicio = System.currentTimeMillis();
                 BigInteger[] seq = new BigInteger[(int) tam];
                 for (int i = 0; i < tam; i++) {
@@ -71,8 +71,8 @@ public class interfaz extends JFrame{
         ActionListener generarf = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                int tam = Integer.parseInt(JOptionPane.showInputDialog("Ingrese el número de iteraciones"));
-                ForkJoinPool pool = new ForkJoinPool(5);
+                int tam = Integer.parseInt(JOptionPane.showInputDialog("Ingrese el número de iteraciones en forkjoin"));
+                ForkJoinPool pool = new ForkJoinPool(7);
                 BigInteger[] seq = new BigInteger[tam];
                 FibonacciFork task = new FibonacciFork(0, tam);
                 long inicio = System.currentTimeMillis();
@@ -93,7 +93,7 @@ public class interfaz extends JFrame{
             int threads = 10;
             @Override
             public void actionPerformed(ActionEvent e) {
-                int tam = Integer.parseInt(JOptionPane.showInputDialog("Ingresa el número de iteraciones"));
+                int tam = Integer.parseInt(JOptionPane.showInputDialog("Ingresa el número de iteraciones en executor service"));
                 FibonacciExecutorService executorService = new FibonacciExecutorService(tam, threads);
                 long inicio = System.currentTimeMillis();
                 List<BigInteger> seq = executorService.execute();
