@@ -9,7 +9,7 @@ import javax.swing.*;
 
 public class interfaz extends JFrame{
 
-    long tam = 0;
+    int tam = 0;
     BigInteger[] seq;
 
     public interfaz(){
@@ -26,14 +26,16 @@ public class interfaz extends JFrame{
         lbfork.setBounds(450, 300, 200, 20);
         JLabel lbexecuter = new JLabel("tiempo executor");
         lbexecuter.setBounds(700, 300, 200, 20);
+        JButton btndefinir = new JButton("definir");
+        btndefinir.setBounds(150, 650, 100, 20);
         JButton btnsecuencial = new JButton("secuencial");
-        btnsecuencial.setBounds(150, 650, 100, 20);
+        btnsecuencial.setBounds(300, 650, 100, 20);
         JButton btnfork = new JButton("forkjoin");
-        btnfork.setBounds(300, 650, 100, 20);
+        btnfork.setBounds(600, 650, 100, 20);
         JButton btnexecutor = new JButton("executor");
-        btnexecutor.setBounds(600, 650, 100, 20);
+        btnexecutor.setBounds(450, 650, 100, 20);
         JButton btnlimpiar = new JButton("limpiar");
-        btnlimpiar.setBounds(450, 650, 100, 20);
+        btnlimpiar.setBounds(750, 650, 100, 20);
         JTextArea area1 = new JTextArea("");
         area1.setLineWrap(true);
         area1.setBounds(45, 30, 900, 200);
@@ -44,18 +46,27 @@ public class interfaz extends JFrame{
         this.getContentPane().add(lbsecuencial);
         this.getContentPane().add(lbfork);
         this.getContentPane().add(lbexecuter);
+        this.getContentPane().add(btndefinir);
         this.getContentPane().add(btnsecuencial);
         this.getContentPane().add(btnexecutor);
         this.getContentPane().add(btnfork);
         this.getContentPane().add(btnlimpiar);
         this.getContentPane().add(scroll1);
 
+        ActionListener definir = new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                tam = Integer.parseInt(JOptionPane.showInputDialog("ingrese la cantidad de iteraciones para hacer"));
+            }
+        };
+
+        btndefinir.addActionListener(definir);
+
         ActionListener secuencial = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                tam = Integer.parseInt(JOptionPane.showInputDialog("Ingrese el número de iteraciones en secuencial"));
                 long inicio = System.currentTimeMillis();
-                BigInteger[] seq = new BigInteger[(int) tam];
+                BigInteger[] seq = new BigInteger[tam];
                 for (int i = 0; i < tam; i++) {
                     seq[i] = fibonacci.fibonacciRecursivo(i);
                 }
@@ -71,8 +82,7 @@ public class interfaz extends JFrame{
         ActionListener generarf = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                int tam = Integer.parseInt(JOptionPane.showInputDialog("Ingrese el número de iteraciones en forkjoin"));
-                ForkJoinPool pool = new ForkJoinPool(7);
+                ForkJoinPool pool = new ForkJoinPool(10);
                 BigInteger[] seq = new BigInteger[tam];
                 FibonacciFork task = new FibonacciFork(0, tam);
                 long inicio = System.currentTimeMillis();
@@ -93,8 +103,7 @@ public class interfaz extends JFrame{
             int threads = 10;
             @Override
             public void actionPerformed(ActionEvent e) {
-                int tam = Integer.parseInt(JOptionPane.showInputDialog("Ingresa el número de iteraciones en executor service"));
-                FibonacciExecutorService executorService = new FibonacciExecutorService(tam, threads);
+                FibonacciExecutorService executorService = new FibonacciExecutorService( tam, threads);
                 long inicio = System.currentTimeMillis();
                 List<BigInteger> seq = executorService.execute();
                 long fin = System.currentTimeMillis();
