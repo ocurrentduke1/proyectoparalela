@@ -1,16 +1,21 @@
-import java.awt.Color;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.math.BigInteger;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ForkJoinPool;
-import javax.swing.*;
 
 public class interfaz extends JFrame{
 
     int tam = 0;
     BigInteger[] seq;
+    static chatServidor servidor;
 
     public interfaz(){
         this.setBounds(150, 0, 1000, 750);
@@ -56,7 +61,12 @@ public class interfaz extends JFrame{
         ActionListener definir = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                tam = Integer.parseInt(JOptionPane.showInputDialog("ingrese la cantidad de iteraciones para hacer"));
+                tam = Integer.parseInt(JOptionPane.showInputDialog("Ingrese la cantidad de iteraciones para hacer"));
+                try {
+                    servidor.setTam(tam);
+                } catch (RemoteException err) {
+                    System.out.println(err);
+                }
             }
         };
 
@@ -66,13 +76,17 @@ public class interfaz extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 long inicio = System.currentTimeMillis();
-                BigInteger[] seq = new BigInteger[tam];
-                for (int i = 0; i < tam; i++) {
-                    seq[i] = fibonacci.fibonacciRecursivo(i);
+                try {
+                    BigInteger[] seq = new BigInteger[servidor.getTam()];
+                    for (int i = 0; i < servidor.getTam(); i++) {
+                        seq[i] = fibonacci.fibonacciRecursivo(i);
+                    }
+                    area1.setText(Arrays.toString(seq));
+                } catch (RemoteException error) {
+                    System.out.println(error);
                 }
                 long fin = System.currentTimeMillis();
                 long total = fin - inicio;
-                area1.setText(Arrays.toString(seq));
                 lbsecuencial.setText("Tiempo secuencial: " + total + "ms");
             }
         };
@@ -83,16 +97,20 @@ public class interfaz extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 ForkJoinPool pool = new ForkJoinPool(10);
-                BigInteger[] seq = new BigInteger[tam];
-                FibonacciFork task = new FibonacciFork(0, tam);
                 long inicio = System.currentTimeMillis();
-                for (int i = 0; i < tam; i++) {
-                    seq[i] = pool.invoke(task);
-                    task = new FibonacciFork(i+1, tam);
+                try {
+                    BigInteger[] seq = new BigInteger[servidor.getTam()];
+                    FibonacciFork task = new FibonacciFork(0, servidor.getTam());
+                    for (int i = 0; i < servidor.getTam(); i++) {
+                        seq[i] = pool.invoke(task);
+                        task = new FibonacciFork(i + 1, servidor.getTam());
+                    }
+                    area1.setText(Arrays.toString(seq));
+                }catch (RemoteException error){
+                    System.out.println(error);
                 }
                 long fin = System.currentTimeMillis();
                 long total = (fin - inicio);
-                area1.setText(Arrays.toString(seq));
                 lbfork.setText("Tiempo forkjoin: " + total + "ms");
             }
         };
@@ -103,12 +121,16 @@ public class interfaz extends JFrame{
             int threads = 10;
             @Override
             public void actionPerformed(ActionEvent e) {
-                FibonacciExecutorService executorService = new FibonacciExecutorService( tam, threads);
                 long inicio = System.currentTimeMillis();
-                List<BigInteger> seq = executorService.execute();
+                try {
+                    FibonacciExecutorService executorService = new FibonacciExecutorService(servidor.getTam(), threads);
+                    List<BigInteger> seq = executorService.execute();
+                    area1.setText(Arrays.toString(seq.toArray()));
+                }catch (RemoteException error){
+                    System.out.println(error);
+                }
                 long fin = System.currentTimeMillis();
                 long total = (fin - inicio);
-                area1.setText(Arrays.toString(seq.toArray()));
                 lbexecuter.setText("Tiempo Executor: " + total + "ms");
             }
         };
@@ -122,5 +144,18 @@ public class interfaz extends JFrame{
             }
         };
         btnlimpiar.addActionListener(limpiar);
+    }
+
+    public static void main(String[] args) {
+        String nombre = JOptionPane.showInputDialog("Ingresa tu nombre");
+        interfaz ventana = new interfaz();
+        ventana.setVisible(true);
+        try {
+            Registry rmii = LocateRegistry.getRegistry(servidorRMI.HOST, servidorRMI.PORT);
+            servidor = (chatServidor) rmii.lookup("Chat");
+            new Thread(new implementacionClienteChat(nombre, servidor)).start();
+        } catch (NotBoundException | RemoteException err) {
+            System.out.println(err);
+        }
     }
 }
