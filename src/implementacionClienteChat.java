@@ -19,7 +19,7 @@ public class implementacionClienteChat extends UnicastRemoteObject implements ch
     }
 
     public void sendTam(int tam) throws RemoteException {
-        System.out.println("El cliente definio el tamaño del array");
+        System.out.println("");
     }
 
     public int getTam() throws RemoteException {
