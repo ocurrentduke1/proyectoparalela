@@ -13,7 +13,7 @@ public class FibonacciFork extends RecursiveTask<BigInteger> {
 
     @Override
     protected BigInteger compute() {
-        if (n <= 2) {
+        if (n <= 4) {
             return BigInteger.valueOf(n);
         }
 

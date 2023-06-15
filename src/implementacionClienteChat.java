@@ -19,7 +19,7 @@ public class implementacionClienteChat extends UnicastRemoteObject implements ch
     }
 
     public void sendTam(int tam) throws RemoteException {
-        System.out.println("");
+        System.out.println("el cliente definio tam");
     }
 
     public int getTam() throws RemoteException {

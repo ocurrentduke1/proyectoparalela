@@ -61,8 +61,8 @@ public class interfaz extends JFrame{
         ActionListener definir = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                tam = Integer.parseInt(JOptionPane.showInputDialog("Ingrese la cantidad de iteraciones para hacer"));
                 try {
+                tam = Integer.parseInt(JOptionPane.showInputDialog("Ingrese la cantidad de iteraciones para hacer"));
                     servidor.setTam(tam);
                 } catch (RemoteException err) {
                     System.out.println(err);

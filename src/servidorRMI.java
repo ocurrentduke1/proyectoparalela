@@ -3,7 +3,7 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
 public class servidorRMI {
-    public static String HOST = "192.168.137.11";
+    public static String HOST = "192.168.100.172";
     public static int PORT = 1099;
 
     public servidorRMI() {
