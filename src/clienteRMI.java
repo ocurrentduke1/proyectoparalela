@@ -1,9 +1,9 @@
-import javax.swing.*;
-import java.awt.*;
+import java.awt.HeadlessException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
-import java.rmi.registry.LocateRegistry;
+import javax.swing.JOptionPane;
 import java.rmi.registry.Registry;
+import java.rmi.registry.LocateRegistry;
 
 public class clienteRMI {
     public static void main(String[] args) {

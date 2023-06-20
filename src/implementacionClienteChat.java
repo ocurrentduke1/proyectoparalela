@@ -1,14 +1,12 @@
-import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.ArrayList;
+import java.rmi.RemoteException;
+import java.rmi.Remote;
 import java.util.Scanner;
 
 
 public class implementacionClienteChat extends UnicastRemoteObject implements chatCliente, Runnable{
     chatServidor servidor;
     public String nombre = null;
-
-    public int num;
 
     implementacionClienteChat(String nombre, chatServidor servidor )throws RemoteException{
         this.nombre = nombre;
@@ -22,10 +20,10 @@ public class implementacionClienteChat extends UnicastRemoteObject implements ch
     }
 
     public void sendTam(int tam) throws RemoteException {
-        System.out.println("el cliente definio tam");
+        System.out.println("El cliente definio el tamaño del array");
     }
 
-    public ArrayList<Integer> getTam() throws RemoteException {
+    public int getTam() throws RemoteException {
         return servidor.getTam();
     }
 

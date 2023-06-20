@@ -2,6 +2,10 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
+
 public class servidorRMI {
     public static String HOST = "192.168.1.153";
     public static int PORT = 1050;

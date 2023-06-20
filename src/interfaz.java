@@ -1,5 +1,4 @@
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.math.BigInteger;
@@ -10,6 +9,7 @@ import java.rmi.registry.Registry;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ForkJoinPool;
+import javax.swing.*;
 
 public class interfaz extends JFrame{
 
@@ -61,9 +61,15 @@ public class interfaz extends JFrame{
         ActionListener definir = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                try {
                 tam = Integer.parseInt(JOptionPane.showInputDialog("Ingrese la cantidad de iteraciones para hacer"));
-                    servidor.setTam(tam);
+                try {
+                    if(servidor.getTam() !=0){
+                        int tmp = servidor.getTam();
+                        tmp += tam;
+                        servidor.setTam(tmp);
+                    }else {
+                        servidor.setTam(tam);
+                    }
                 } catch (RemoteException err) {
                     System.out.println(err);
                 }
@@ -140,7 +146,13 @@ public class interfaz extends JFrame{
         ActionListener limpiar = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                int vacio = 0;
                 area1.setText("");
+                try {
+                    servidor.setTam(vacio);
+                } catch (RemoteException ex) {
+                    throw new RuntimeException(ex);
+                }
             }
         };
         btnlimpiar.addActionListener(limpiar);
