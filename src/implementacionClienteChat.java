@@ -1,6 +1,5 @@
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.ArrayList;
 import java.util.Scanner;
 
 
@@ -25,7 +24,7 @@ public class implementacionClienteChat extends UnicastRemoteObject implements ch
         System.out.println("el cliente definio tam");
     }
 
-    public ArrayList<Integer> getTam() throws RemoteException {
+    public int getTam() throws RemoteException {
         return servidor.getTam();
     }
 
