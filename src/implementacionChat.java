@@ -5,10 +5,12 @@ import java.util.ArrayList;
 public class implementacionChat extends UnicastRemoteObject implements chatServidor {
 
     public ArrayList<chatCliente> clientes;
-    private int tam;
+    public ArrayList<Integer> tam;
 
     public implementacionChat() throws RemoteException{
+        super();
         clientes = new ArrayList<chatCliente>();
+        tam = new ArrayList<Integer>();
     }
 
     @Override
@@ -16,11 +18,8 @@ public class implementacionChat extends UnicastRemoteObject implements chatServi
         this.clientes.add(cliente);
     }
 
-    public void setTam(int tam) throws RemoteException {
-        for (chatCliente client : clientes) {
-            client.sendTam(tam);
-            this.tam = tam;
-        }
+    public void setTam(int num1) throws RemoteException {
+        tam.add(num1);
     }
 
     public int getTam() throws RemoteException {
