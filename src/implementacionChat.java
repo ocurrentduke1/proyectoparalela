@@ -22,7 +22,7 @@ public class implementacionChat extends UnicastRemoteObject implements chatServi
         tam.add(num1);
     }
 
-    public int getTam() throws RemoteException {
+    public ArrayList<Integer> getTam() throws RemoteException {
         return this.tam;
     }
 
